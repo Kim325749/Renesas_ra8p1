@@ -99,6 +99,9 @@ void UART_CMD_Init(void)
     if (FSP_SUCCESS != err) {
         while (1) { }
     }
+ 
+    /* TX 引脚上拉稳定延时：避免 TX 线在空闲时浮空，导致下次发送的起始位被误判而造成数据损坏 */
+    R_BSP_SoftwareDelay(50, BSP_DELAY_UNITS_MILLISECONDS);
 
     /* 注册接收中断回调 */
     R_SCI_B_UART_CallbackSet(&g_uart0_ctrl, uart_callback, NULL, NULL);
